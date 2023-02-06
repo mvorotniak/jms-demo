@@ -11,6 +11,8 @@ public class JmsConfig {
 
     public static final String QUEUE_NAME = "hello-world";
 
+    public static final String SEND_AND_RECEIVE_QUEUE = "reply-me";
+
     /**
      * Converts POJOs into JSONs and vice versa
      */
