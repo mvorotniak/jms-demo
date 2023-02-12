@@ -2,6 +2,7 @@ package com.mvoro.jms.jmsdemoproject.listener;
 
 import java.util.UUID;
 
+import javax.jms.Destination;
 import javax.jms.JMSException;
 import javax.jms.Message;
 
@@ -33,7 +34,7 @@ public class HelloMessageListener {
 
     @JmsListener(destination = JmsConfig.SEND_AND_RECEIVE_QUEUE)
     public void listenAndRespond(@Payload HelloWorldMessage helloWorldMessage, @Headers MessageHeaders messageHeaders,
-        Message message) throws JMSException {
+        Message message, org.springframework.messaging.Message springMessage) throws JMSException {
 
         log.info("Received JMS message [{}]", helloWorldMessage);
 
@@ -42,7 +43,9 @@ public class HelloMessageListener {
             .message("World!")
             .build();
 
-        jmsTemplate.convertAndSend(message.getJMSReplyTo(), worldMessage);
+        jmsTemplate.convertAndSend((Destination) springMessage.getHeaders().get("jms_replyTo"), "obtained message!");
+
+        //jmsTemplate.convertAndSend(message.getJMSReplyTo(), worldMessage);
     }
 
 }
